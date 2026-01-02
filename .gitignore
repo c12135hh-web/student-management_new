@@ -1,3 +1,11 @@
+# 学生信息管理系统
+
+![Python](https://img.shields.io/badge/python-3.7+-blue.svg)
+![Flask](https://img.shields.io/badge/flask-2.3.3-green.svg)
+![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
+![GitHub](https://img.shields.io/badge/github-student--management-brightgreen.svg)
+
+一个基于 Flask 的全栈 Web 应用，用于管理学生信息。
 # Python
 __pycache__/
 *.py[cod]
@@ -49,4 +57,5 @@ Thumbs.db
 
 # Project specific
 /static/debug_export_*.xlsx
+
 test_*.py
