@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}添加学生 - 学生信息管理系统{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-user-plus"></i> 添加新学生</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_student') }}">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row">
+                        <!-- 学号 -->
+                        <div class="col-md-6 mb-3">
+                            <label for="student_id" class="form-label">学号 *</label>
+                            {{ form.student_id(class="form-control", placeholder="请输入学号") }}
+                            {% if form.student_id.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.student_id.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 姓名 -->
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">姓名 *</label>
+                            {{ form.name(class="form-control", placeholder="请输入姓名") }}
+                            {% if form.name.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.name.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- 年龄 -->
+                        <div class="col-md-4 mb-3">
+                            <label for="age" class="form-label">年龄 *</label>
+                            {{ form.age(class="form-control", placeholder="请输入年龄") }}
+                            {% if form.age.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.age.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 性别 -->
+                        <div class="col-md-4 mb-3">
+                            <label for="gender" class="form-label">性别 *</label>
+                            {{ form.gender(class="form-select") }}
+                            {% if form.gender.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.gender.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- GPA -->
+                        <div class="col-md-4 mb-3">
+                            <label for="gpa" class="form-label">GPA</label>
+                            {{ form.gpa(class="form-control", placeholder="0.0-4.0") }}
+                            {% if form.gpa.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.gpa.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 专业 -->
+                    <div class="mb-3">
+                        <label for="major" class="form-label">专业 *</label>
+                        {{ form.major(class="form-control", placeholder="请输入专业名称") }}
+                        {% if form.major.errors %}
+                            <div class="text-danger">
+                                {% for error in form.major.errors %}
+                                    <small>{{ error }}</small><br>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- 邮箱 -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">邮箱 *</label>
+                        {{ form.email(class="form-control", placeholder="example@email.com") }}
+                        {% if form.email.errors %}
+                            <div class="text-danger">
+                                {% for error in form.email.errors %}
+                                    <small>{{ error }}</small><br>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- 电话 -->
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">电话</label>
+                        {{ form.phone(class="form-control", placeholder="请输入联系电话") }}
+                        {% if form.phone.errors %}
+                            <div class="text-danger">
+                                {% for error in form.phone.errors %}
+                                    <small>{{ error }}</small><br>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- 地址 -->
+                    <div class="mb-3">
+                        <label for="address" class="form-label">地址</label>
+                        {{ form.address(class="form-control", rows="3", placeholder="请输入详细地址") }}
+                        {% if form.address.errors %}
+                            <div class="text-danger">
+                                {% for error in form.address.errors %}
+                                    <small>{{ error }}</small><br>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary me-md-2">
+                            取消
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存学生信息
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

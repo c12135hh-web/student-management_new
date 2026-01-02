@@ -1,0 +1,502 @@
+<!-- templates/edit_student.html -->
+{% extends "base.html" %}
+
+{% block title %}编辑学生 - 学生信息管理系统{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <!-- 页面标题 -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">
+                <i class="fas fa-user-edit text-warning me-2"></i>
+                编辑学生信息
+            </h2>
+            <div>
+                <span class="badge bg-dark fs-6">
+                    <i class="fas fa-id-card me-1"></i>
+                    {{ student.student_id }}
+                </span>
+            </div>
+        </div>
+
+        <!-- 学生基本信息概览 -->
+        <div class="card mb-4 border-warning">
+            <div class="card-header bg-warning bg-opacity-10 border-warning">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    当前信息概览
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-user text-primary me-2"></i>
+                            <span class="fw-bold">姓名：</span>
+                            <span class="ms-2">{{ student.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-venus-mars text-primary me-2"></i>
+                            <span class="fw-bold">性别：</span>
+                            <span class="ms-2">{{ student.gender }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-chart-line text-primary me-2"></i>
+                            <span class="fw-bold">GPA：</span>
+                            <span class="ms-2 badge bg-{{ 'success' if student.gpa >= 3.5 else 'warning' if student.gpa >= 2.5 else 'danger' }}">
+                                {{ "%.2f"|format(student.gpa) }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-calendar-alt text-primary me-2"></i>
+                            <span class="fw-bold">创建时间：</span>
+                            <span class="ms-2">{{ student.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 编辑表单 -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-edit me-2"></i>
+                    修改学生信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('edit_student', student_id=student.id) }}"
+                      id="edit-form" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3">
+                        <!-- 学号和姓名 -->
+                        <div class="col-md-6">
+                            <label for="student_id" class="form-label required">
+                                <i class="fas fa-id-card me-1"></i>
+                                学号
+                            </label>
+                            {{ form.student_id(class="form-control", value=student.student_id) }}
+                            {% if form.student_id.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.student_id.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">6-20位字母或数字，不可重复</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="name" class="form-label required">
+                                <i class="fas fa-user me-1"></i>
+                                姓名
+                            </label>
+                            {{ form.name(class="form-control", value=student.name) }}
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 年龄和性别 -->
+                        <div class="col-md-4">
+                            <label for="age" class="form-label required">
+                                <i class="fas fa-birthday-cake me-1"></i>
+                                年龄
+                            </label>
+                            {{ form.age(class="form-control", value=student.age) }}
+                            {% if form.age.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.age.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="gender" class="form-label required">
+                                <i class="fas fa-venus-mars me-1"></i>
+                                性别
+                            </label>
+                            {{ form.gender(class="form-select") }}
+                            {% if form.gender.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.gender.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="gpa" class="form-label">
+                                <i class="fas fa-chart-line me-1"></i>
+                                GPA
+                            </label>
+                            {{ form.gpa(class="form-control", value=student.gpa) }}
+                            {% if form.gpa.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.gpa.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">0.0 - 4.0，可保留两位小数</div>
+                        </div>
+
+                        <!-- 专业 -->
+                        <div class="col-12">
+                            <label for="major" class="form-label required">
+                                <i class="fas fa-book me-1"></i>
+                                专业
+                            </label>
+                            {{ form.major(class="form-control", value=student.major) }}
+                            {% if form.major.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.major.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 邮箱 -->
+                        <div class="col-12">
+                            <label for="email" class="form-label required">
+                                <i class="fas fa-envelope me-1"></i>
+                                邮箱
+                            </label>
+                            {{ form.email(class="form-control", value=student.email) }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.email.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">请输入有效的邮箱地址</div>
+                        </div>
+
+                        <!-- 电话和地址 -->
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">
+                                <i class="fas fa-phone me-1"></i>
+                                电话
+                            </label>
+                            {{ form.phone(class="form-control", value=student.phone if student.phone else '') }}
+                            {% if form.phone.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.phone.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="address" class="form-label">
+                                <i class="fas fa-home me-1"></i>
+                                地址
+                            </label>
+                            {{ form.address(class="form-control", value=student.address if student.address else '') }}
+                            {% if form.address.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.address.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- 表单操作按钮 -->
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> 返回列表
+                            </a>
+                            <button type="button" class="btn btn-danger ms-2"
+                                    onclick="confirmDelete({{ student.id }}, '{{ student.name }}')">
+                                <i class="fas fa-trash me-1"></i> 删除学生
+                            </button>
+                        </div>
+                        <div>
+                            <button type="reset" class="btn btn-outline-secondary me-2">
+                                <i class="fas fa-redo me-1"></i> 重置
+                            </button>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save me-1"></i> 保存修改
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 操作提示 -->
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    操作提示
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>带 <span class="text-danger">*</span> 标记的字段为必填项</li>
+                    <li>修改学号或邮箱时，系统会自动检查是否与其他学生重复</li>
+                    <li>保存修改后，系统会自动更新"最后修改时间"</li>
+                    <li>点击"删除学生"按钮将永久删除该学生信息，请谨慎操作</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除确认表单（隐藏） -->
+<form method="POST" action="{{ url_for('delete_student', student_id=student.id) }}"
+      id="delete-form" style="display: none;">
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// 页面加载时自动选择当前性别
+document.addEventListener('DOMContentLoaded', function() {
+    const currentGender = "{{ student.gender }}";
+    const genderSelect = document.getElementById('gender');
+
+    if (genderSelect && currentGender) {
+        for (let i = 0; i < genderSelect.options.length; i++) {
+            if (genderSelect.options[i].value === currentGender) {
+                genderSelect.selectedIndex = i;
+                break;
+            }
+        }
+    }
+
+    // 表单验证增强
+    const form = document.getElementById('edit-form');
+
+    form.addEventListener('submit', function(event) {
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('[required]');
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                if (!field.classList.contains('is-invalid')) {
+                    field.classList.add('is-invalid');
+                    // 添加错误提示
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    errorDiv.textContent = '此字段不能为空';
+                    field.parentNode.appendChild(errorDiv);
+                }
+            } else {
+                field.classList.remove('is-invalid');
+                // 移除错误提示
+                const errorDiv = field.parentNode.querySelector('.invalid-feedback');
+                if (errorDiv) {
+                    errorDiv.remove();
+                }
+            }
+        });
+
+        // 验证邮箱格式
+        const emailField = document.getElementById('email');
+        if (emailField.value) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(emailField.value)) {
+                isValid = false;
+                emailField.classList.add('is-invalid');
+                if (!emailField.parentNode.querySelector('.invalid-feedback')) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    errorDiv.textContent = '请输入有效的邮箱地址';
+                    emailField.parentNode.appendChild(errorDiv);
+                }
+            }
+        }
+
+        // 验证学号格式
+        const studentIdField = document.getElementById('student_id');
+        if (studentIdField.value) {
+            const idRegex = /^[A-Za-z0-9]{6,20}$/;
+            if (!idRegex.test(studentIdField.value)) {
+                isValid = false;
+                studentIdField.classList.add('is-invalid');
+                if (!studentIdField.parentNode.querySelector('.invalid-feedback')) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    errorDiv.textContent = '学号必须为6-20位字母或数字';
+                    studentIdField.parentNode.appendChild(errorDiv);
+                }
+            }
+        }
+
+        // 验证年龄范围
+        const ageField = document.getElementById('age');
+        if (ageField.value) {
+            const age = parseInt(ageField.value);
+            if (age < 10 || age > 60) {
+                isValid = false;
+                ageField.classList.add('is-invalid');
+                if (!ageField.parentNode.querySelector('.invalid-feedback')) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    errorDiv.textContent = '年龄范围必须在10-60岁之间';
+                    ageField.parentNode.appendChild(errorDiv);
+                }
+            }
+        }
+
+        // 验证GPA范围
+        const gpaField = document.getElementById('gpa');
+        if (gpaField.value) {
+            const gpa = parseFloat(gpaField.value);
+            if (gpa < 0.0 || gpa > 4.0) {
+                isValid = false;
+                gpaField.classList.add('is-invalid');
+                if (!gpaField.parentNode.querySelector('.invalid-feedback')) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    errorDiv.textContent = 'GPA范围必须在0.0-4.0之间';
+                    gpaField.parentNode.appendChild(errorDiv);
+                }
+            }
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            // 滚动到第一个错误字段
+            const firstError = form.querySelector('.is-invalid');
+            if (firstError) {
+                firstError.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                firstError.focus();
+            }
+
+            // 显示错误提示
+            const errorAlert = document.createElement('div');
+            errorAlert.className = 'alert alert-danger alert-dismissible fade show mt-3';
+            errorAlert.innerHTML = `
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>表单填写有误！</strong> 请检查标记为红色的字段。
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            form.prepend(errorAlert);
+
+            // 5秒后自动移除错误提示
+            setTimeout(() => {
+                if (errorAlert.parentNode) {
+                    errorAlert.remove();
+                }
+            }, 5000);
+        }
+    });
+
+    // 实时验证
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.hasAttribute('required') && !this.value.trim()) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+        });
+
+        input.addEventListener('input', function() {
+            if (this.classList.contains('is-invalid')) {
+                this.classList.remove('is-invalid');
+            }
+        });
+    });
+});
+
+// 删除确认函数
+function confirmDelete(studentId, studentName) {
+    if (confirm(`确定要删除学生 "${studentName}" 吗？\n\n此操作将永久删除该学生的所有信息，且无法恢复！`)) {
+        document.getElementById('delete-form').submit();
+    }
+}
+
+// 键盘快捷键
+document.addEventListener('keydown', function(event) {
+    // Ctrl+S 保存
+    if (event.ctrlKey && event.key === 's') {
+        event.preventDefault();
+        document.getElementById('edit-form').querySelector('button[type="submit"]').click();
+    }
+
+    // Escape 返回列表
+    if (event.key === 'Escape') {
+        window.location.href = "{{ url_for('index') }}";
+    }
+});
+</script>
+
+<style>
+.required::after {
+    content: " *";
+    color: #dc3545;
+}
+
+.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+.form-text {
+    color: #6c757d;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #e0a800;
+    color: #212529;
+}
+</style>
+{% endblock %}
