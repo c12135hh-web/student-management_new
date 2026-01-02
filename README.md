@@ -203,7 +203,7 @@ waitress-serve --host=0.0.0.0 --port=5000 app:app
 
 ## 👨‍💻 作者
 
-[你的名字] - [GitHub主页](https://github.com/your-username)
+[希芸[ - [GitHub主页](https://github.com/c12135hh-web)
 
 项目链接：https://github.com/your-username/student-management
 
@@ -232,3 +232,4 @@ waitress-serve --host=0.0.0.0 --port=5000 app:app
 ---
 
 **提示**：运行前请确保已激活虚拟环境并安装所有依赖。如有问题，请检查 Python 版本和依赖安装情况。
+
